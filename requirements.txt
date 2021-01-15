@@ -1,3 +1,6 @@
+baidu-aip
+opencv-python
 fastapi
-uvicorn
+requests
 selenium
+uvicorn
