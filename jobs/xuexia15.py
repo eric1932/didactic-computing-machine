@@ -22,7 +22,7 @@ class Job(JobTemplate):
         USER = cred_dict["username"]
         PASS = cred_dict["password"]
 
-        driver = JobTemplate.get_driver_chrome()
+        driver = JobTemplate.get_driver_chrome(False)
 
         try:
             # Part 1: handle log in
@@ -85,3 +85,5 @@ class Job(JobTemplate):
             '''
         finally:
             driver.quit()
+
+        return "success", None

@@ -22,6 +22,7 @@ class JobTemplate:
         else:
             self._set_last_success_time(datetime.min)
             self.return_status = {"status": "first-run"}
+        self.thread_lock = False
         self.worker_thread = threading.Thread(target=self.watcher)
 
     @abc.abstractmethod
@@ -45,9 +46,9 @@ class JobTemplate:
                 return_status = self.return_status
             else:
                 return_status = prev_status
-            if not self.worker_thread.is_alive():
-                self.worker_thread.start()  # in background
-                # TODO cannot start twice
+            if not self.thread_lock:  # wait for finish
+                self.thread_lock = True
+                self.worker_thread.start()  # start a self.watcher
             return return_status
         else:
             return self.return_status
@@ -58,7 +59,10 @@ class JobTemplate:
         and set the status & log time accordingly
         """
         try:
-            self.exec()
+            ret, _ = self.exec()
+            if ret == "success":
+                self.worker_thread = threading.Thread(target=self.watcher)
+                self.thread_lock = False
             self._set_last_success_time(datetime.now())
             # set success
             self.return_status = {"status": "success", "time": self.last_success_time}
