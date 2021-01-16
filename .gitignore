@@ -1,3 +1,8 @@
+# Project Related
+logs
+credentials
+!credentials/README.md
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
