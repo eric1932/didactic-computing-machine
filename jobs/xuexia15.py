@@ -33,6 +33,22 @@ class Job(JobTemplate):
                 driver.get(URL)
             except TimeoutException:
                 pass  # just continue
+            '''
+            # import cookies *if exist*
+            if os.path.exists("./credentials/xuexia15_cookies.json"):
+                with open("./credentials/xuexia15_cookies.json") as f:
+                    c = json.loads(f.read())
+                    if isinstance(c, list):
+                        for each_c in c:
+                            driver.add_cookie(each_c)
+                    else:
+                        driver.add_cookie(c)
+                try:
+                    driver.refresh()
+                except Exception:
+                    pass
+            '''
+            # check login status
             logged_in = True
             try:
                 driver.find_element_by_id("um")
@@ -60,5 +76,12 @@ class Job(JobTemplate):
             qiandao.click()
 
             # TODO add validation
+
+            # Save cookies (failed to load because of unknown issue)
+            '''
+            cookies = driver.get_cookies()
+            with open("./credentials/xuexia15_cookies.json", "w") as f:
+                f.write(json.dumps(cookies))
+            '''
         finally:
             driver.quit()
