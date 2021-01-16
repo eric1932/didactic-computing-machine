@@ -21,7 +21,7 @@ class JobTemplate:
             self.return_status = {"status": "success", "time": self.last_success_time}
         else:
             self._set_last_success_time(datetime.min)
-            self.return_status = {"status": "failure"}  # or "first-run"
+            self.return_status = {"status": "first-run"}
         self.worker_thread = threading.Thread(target=self.watcher)
 
     @abc.abstractmethod
@@ -41,10 +41,14 @@ class JobTemplate:
         if datetime.utcnow() > self.last_success_time + timedelta(days=1):
             prev_status = self.return_status
             self.return_status = {"status": "in-progress"}
+            if self.return_status["status"] == "first-run":
+                return_status = self.return_status
+            else:
+                return_status = prev_status
             if not self.worker_thread.is_alive():
                 self.worker_thread.start()  # in background
                 # TODO cannot start twice
-            return prev_status
+            return return_status
         else:
             return self.return_status
 
