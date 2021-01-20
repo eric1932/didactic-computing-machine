@@ -1,7 +1,9 @@
 # Project Related
 logs
-credentials
+credentials/*
 !credentials/README.md
+chrome_profiles/*
+!chrome_profiles/README.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
