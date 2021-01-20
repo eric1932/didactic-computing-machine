@@ -50,7 +50,7 @@ class Job(JobTemplate):
         # 百度OCR API
         ocr_client = AipOcr(APP_ID, API_KEY, SECRET_KEY)
 
-        driver = JobTemplate.get_driver_chrome()
+        driver = self.get_driver_chrome()
         driver.get("https://hdsky.me/")
 
         to_return = ""

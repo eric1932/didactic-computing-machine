@@ -70,10 +70,11 @@ class JobTemplate:
             # set failure
             self.return_status = {"status": "failure"}
 
-    @staticmethod
-    def get_driver_chrome(headless=True):
+    def get_driver_chrome(self, headless=True, use_profile=False):
         options = webdriver.ChromeOptions()
         options.headless = headless
+        if use_profile:
+            options.add_argument(f"user-data-dir=./chrome_profiles/{self.module_name}")
         return webdriver.Chrome(options=options)
 
     def _set_last_success_time(self, time: datetime):

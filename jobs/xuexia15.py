@@ -22,7 +22,7 @@ class Job(JobTemplate):
         USER = cred_dict["username"]
         PASS = cred_dict["password"]
 
-        driver = JobTemplate.get_driver_chrome(True)
+        driver = self.get_driver_chrome()
 
         try:
             # Part 1: handle log in
